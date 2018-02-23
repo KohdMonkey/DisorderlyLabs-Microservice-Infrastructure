@@ -51,10 +51,6 @@ public class Controller {
   JdbcTemplate jdbcTemplate;
 
 
-  @Qualifier("zipkinTracer")
-  @Autowired
-  private Tracing tracing;
-
 
   @RequestMapping("/")
   public String index() {
@@ -65,17 +61,15 @@ public class Controller {
   @RequestMapping("/b")
   public String test(HttpServletRequest request) {
 	System.out.println("[TEST] inventory");
-
+    System.out.println("zipkin_ip: " + System.getenv("zipkin_ip"));
     OkHttpClient client = new OkHttpClient();
-    Span span = Fault.spanFromContext(tracing, request);
 
 	try{
 		String cart =  "http://" + System.getenv("cart_ip") + "/c";
+        //String cart =  "http://localhost:7001/c";
         System.out.println("cart_URL: " + cart);
 
         Request.Builder req = new Request.Builder().url(cart);
-        Fault.injectContext(tracing, req, span);
-
         Response response = client.newCall(req.build()).execute();
 	}catch(Exception e) {
 		return e.toString();

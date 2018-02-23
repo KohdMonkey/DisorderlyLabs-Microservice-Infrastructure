@@ -1,6 +1,5 @@
 package com.disorderlylabs.app.controllers;
 
-import com.disorderlylabs.app.faultInjection.Fault;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,9 +46,6 @@ public class Controller {
   JdbcTemplate jdbcTemplate;
   private static final String inventory_URL = "http://localhost:7002";
 
-  @Qualifier("zipkinTracer")
-  @Autowired
-  private Tracing tracing;
 
   @RequestMapping("/")
   public String index() {
@@ -64,16 +60,12 @@ public class Controller {
     System.out.println("[TEST] App");
 
     OkHttpClient client = new OkHttpClient();
-    Span span = Fault.spanFromContext(tracing, request);
-    ExtraFieldPropagation.set(span.context(), "InjectFault", "/b=DELAY:5000");
-
 	try{
 		String inventory = "http://" + System.getenv("inventory_ip") + "/b";
         System.out.println("Inventory_URL: " + inventory);
 
         Request.Builder req = new Request.Builder().url(inventory);
 
-        Fault.injectContext(tracing, req, span);
 
         Response response = client.newCall(req.build()).execute();
 	}catch(Exception e) {
