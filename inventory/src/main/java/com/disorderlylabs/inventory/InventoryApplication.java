@@ -18,7 +18,7 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
 @SpringBootApplication
 public class InventoryApplication {
     @Bean
-    RestTemplate restTemplate() {
+    RestTemplate template() {
         return new RestTemplate();
     }
 
