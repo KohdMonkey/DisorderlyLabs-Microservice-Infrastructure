@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import org.springframework.web.client.RestTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.*;
@@ -46,6 +47,9 @@ public class Controller {
   JdbcTemplate jdbcTemplate;
   private static final String inventory_URL = "http://localhost:7002";
 
+  @Autowired
+  RestTemplate restTemplate;
+
 
   @RequestMapping("/")
   public String index() {
@@ -62,12 +66,13 @@ public class Controller {
     OkHttpClient client = new OkHttpClient();
 	try{
 		String inventory = "http://" + System.getenv("inventory_ip") + "/b";
-        System.out.println("Inventory_URL: " + inventory);
+        //System.out.println("Inventory_URL: " + inventory);
 
-        Request.Builder req = new Request.Builder().url(inventory);
+        //Request.Builder req = new Request.Builder().url(inventory);
 
 
-        Response response = client.newCall(req.build()).execute();
+        //Response response = client.newCall(req.build()).execute();
+        restTemplate.getForObject(inventory, String.class);
 	}catch(Exception e) {
 		return e.toString();
 	}	

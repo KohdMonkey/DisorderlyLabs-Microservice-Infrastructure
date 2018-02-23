@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import org.springframework.web.client.RestTemplate;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.disorderlylabs.inventory.mappers.CatalogMapper;
 import com.disorderlylabs.inventory.repositories.Catalog;
@@ -50,7 +52,8 @@ public class Controller {
   @Autowired
   JdbcTemplate jdbcTemplate;
 
-
+  @Autowired
+  RestTemplate restTemplate;
 
   @RequestMapping("/")
   public String index() {
@@ -69,8 +72,9 @@ public class Controller {
         //String cart =  "http://localhost:7001/c";
         System.out.println("cart_URL: " + cart);
 
-        Request.Builder req = new Request.Builder().url(cart);
-        Response response = client.newCall(req.build()).execute();
+        //Request.Builder req = new Request.Builder().url(cart);
+        //Response response = client.newCall(req.build()).execute();
+        restTemplate.getForObject(cart, String.class);
 	}catch(Exception e) {
 		return e.toString();
 	}
