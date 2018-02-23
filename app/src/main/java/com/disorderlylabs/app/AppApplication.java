@@ -1,6 +1,7 @@
 package com.disorderlylabs.app;
 
 
+import org.springframework.web.client.RestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,20 +21,9 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
 public class AppApplication {
 
 	@Bean
-	public Tracing zipkinTracer() {
-		OkHttpSender sender = OkHttpSender.create("http://127.0.0.1:9411/api/v2/spans");
-		AsyncReporter<zipkin2.Span> spanReporter = AsyncReporter.create(sender);
-
-		Tracing tracing = Tracing.newBuilder()
-				.localServiceName("application")
-				.spanReporter(spanReporter)
-				.traceId128Bit(true)
-				.sampler(Sampler.ALWAYS_SAMPLE)
-				.propagationFactory(ExtraFieldPropagation.newFactory(B3Propagation.FACTORY,"InjectFault"))
-				.build();
-
-		return tracing;
-	}
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppApplication.class, args);

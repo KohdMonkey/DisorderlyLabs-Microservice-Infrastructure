@@ -1,4 +1,4 @@
-package com.disorderlylabs.cart;
+package com.disorderlylabs.inventory;
 
 import org.springframework.web.SpringServletContainerInitializer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   @Override protected String[] getServletMappings() {
-    return new String[] {"/", "/c"};
+    return new String[] {"/", "/b"};
   }
 
   @Override protected Class<?>[] getRootConfigClasses() {
@@ -15,6 +15,6 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
   }
 
   @Override protected Class<?>[] getServletConfigClasses() {
-    return new Class[] {CartApplication.class, TracingConfiguration.class};
+    return new Class[] {InventoryApplication.class, TracingConfiguration.class};
   }
 }

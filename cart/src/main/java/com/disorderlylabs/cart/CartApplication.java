@@ -26,24 +26,7 @@ public class CartApplication {
         return new RestTemplate();
     }
 
-    @Bean
-    public Tracing zipkinTracer() {
-        OkHttpSender sender = OkHttpSender.newBuilder()
-                .encoding(Encoding.JSON)
-                .endpoint("http://10.0.0.24:9411/api/v2/spans")
-                .build();
-        AsyncReporter<zipkin2.Span> spanReporter = AsyncReporter.builder(sender).build();
-
-        Tracing tracing = Tracing.newBuilder()
-                .localServiceName("application")
-                .spanReporter(spanReporter)
-                .traceId128Bit(true)
-                .sampler(Sampler.ALWAYS_SAMPLE)
-                .propagationFactory(ExtraFieldPropagation.newFactory(B3Propagation.FACTORY,"InjectFault"))
-                .build();
-
-        return tracing;
-    }
+   
 
 
 	public static void main(String[] args) {

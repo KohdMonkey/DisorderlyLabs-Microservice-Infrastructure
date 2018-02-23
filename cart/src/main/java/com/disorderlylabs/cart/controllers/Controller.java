@@ -32,11 +32,6 @@ public class Controller {
 
   @Autowired
   JdbcTemplate jdbcTemplate;
-
-  @Qualifier("zipkinTracer")
-  @Autowired
-  private Tracing tracing;
-
   @RequestMapping("/")
   public String index() {
       return "Greetings from Cart App!";

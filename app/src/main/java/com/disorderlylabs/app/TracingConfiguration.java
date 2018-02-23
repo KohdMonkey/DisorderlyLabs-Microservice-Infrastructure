@@ -1,4 +1,4 @@
-package com.disorderlylabs.cart;
+package com.disorderlylabs.app;
 
 import brave.Tracing;
 import brave.context.log4j2.ThreadContextCurrentTraceContext;
@@ -44,7 +44,7 @@ public class TracingConfiguration extends WebMvcConfigurerAdapter {
   }
 
   /** Controls aspects of tracing such as the name that shows up in the UI */
-  @Bean Tracing tracing(@Value("cart") String serviceName) {
+  @Bean Tracing tracing(@Value("app") String serviceName) {
     return Tracing.newBuilder()
         .localServiceName(serviceName)
         .propagationFactory(ExtraFieldPropagation.newFactory(B3Propagation.FACTORY, "user-name"))
