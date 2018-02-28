@@ -62,18 +62,19 @@ public class Controller {
   public String test(HttpServletRequest request,
                      @RequestParam(value="InjectFault", required=false) String inject) {
     System.out.println("[TEST] App");
-
-    OkHttpClient client = new OkHttpClient();
+    String response = "";
 	try{
 		String inventory = "http://" + System.getenv("inventory_ip") + "/b";
-        //System.out.println("Inventory_URL: " + inventory);
 
-        //Request.Builder req = new Request.Builder().url(inventory);
+        String cart = "http://" + System.getenv("cart_ip") + "/c";
 
+        response = restTemplate.getForObject(inventory, String.class);
+        System.out.println("Inventory response: " + response);
 
-        //Response response = client.newCall(req.build()).execute();
-        restTemplate.getForObject(inventory, String.class);
-	}catch(Exception e) {
+      response = restTemplate.getForObject(cart, String.class);
+      System.out.println("cart response: " + response);
+
+    }catch(Exception e) {
 		return e.toString();
 	}	
 	return "";

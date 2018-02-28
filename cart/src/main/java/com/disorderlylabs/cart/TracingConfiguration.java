@@ -1,12 +1,15 @@
 package com.disorderlylabs.cart;
 
+import com.disorderlylabs.cart.faultInjection.TracingClientHttpRequestInterceptor;
+import com.disorderlylabs.cart.faultInjection.TracingHandlerInterceptor;
+
 import brave.Tracing;
 import brave.context.log4j2.ThreadContextCurrentTraceContext;
 import brave.http.HttpTracing;
 import brave.propagation.B3Propagation;
 import brave.propagation.ExtraFieldPropagation;
-import brave.spring.web.TracingClientHttpRequestInterceptor;
-import brave.spring.webmvc.TracingHandlerInterceptor;
+//import brave.spring.web.TracingClientHttpRequestInterceptor;
+//import brave.spring.webmvc.TracingHandlerInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -23,6 +26,8 @@ import zipkin2.Span;
 import zipkin2.reporter.AsyncReporter;
 import zipkin2.reporter.Sender;
 import zipkin2.reporter.okhttp3.OkHttpSender;
+
+
 
 /**
  * This adds tracing configuration to any web mvc controllers or rest template clients. This should
@@ -44,7 +49,8 @@ public class TracingConfiguration extends WebMvcConfigurerAdapter {
   }
 
   /** Controls aspects of tracing such as the name that shows up in the UI */
-  @Bean Tracing tracing(@Value("cart") String serviceName) {
+  @Bean Tracing tracing(@Value("inventory") String serviceName) {
+    System.out.println("[LOG]: creating new tracing variable");
     return Tracing.newBuilder()
         .localServiceName(serviceName)
         .propagationFactory(ExtraFieldPropagation.newFactory(B3Propagation.FACTORY, "user-name"))
@@ -54,6 +60,7 @@ public class TracingConfiguration extends WebMvcConfigurerAdapter {
 
   // decides how to name and tag spans. By default they are named the same as the http method.
   @Bean HttpTracing httpTracing(Tracing tracing) {
+    System.out.println("[LOG]: Calling HttpTracing.create()");
     return HttpTracing.create(tracing);
   }
 
@@ -68,6 +75,7 @@ public class TracingConfiguration extends WebMvcConfigurerAdapter {
 
   /** adds tracing to the application-defined rest template */
   @PostConstruct public void init() {
+    System.out.println("[LOG]: Iinitializing listener");
     List<ClientHttpRequestInterceptor> interceptors =
         new ArrayList<>(restTemplate.getInterceptors());
     interceptors.add(clientInterceptor);
@@ -77,6 +85,7 @@ public class TracingConfiguration extends WebMvcConfigurerAdapter {
   /** adds tracing to the application-defined web controller */
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
+    System.out.println("[LOG]: Adding listener");
     registry.addInterceptor(serverInterceptor);
   }
 }

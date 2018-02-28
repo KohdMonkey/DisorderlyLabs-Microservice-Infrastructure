@@ -64,17 +64,17 @@ public class Controller {
   @RequestMapping("/b")
   public String test(HttpServletRequest request) {
 	System.out.println("[TEST] inventory");
-    System.out.println("zipkin_ip: " + System.getenv("zipkin_ip"));
+    //System.out.println("zipkin_ip: " + System.getenv("zipkin_ip"));
     OkHttpClient client = new OkHttpClient();
 
 	try{
 		String cart =  "http://" + System.getenv("cart_ip") + "/c";
         //String cart =  "http://localhost:7001/c";
-        System.out.println("cart_URL: " + cart);
+        //System.out.println("cart_URL: " + cart);
 
         //Request.Builder req = new Request.Builder().url(cart);
         //Response response = client.newCall(req.build()).execute();
-        restTemplate.getForObject(cart, String.class);
+        //restTemplate.getForObject(cart, String.class);
 	}catch(Exception e) {
 		return e.toString();
 	}
